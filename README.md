@@ -73,7 +73,7 @@ Here is a summary of the notebooks and dependencies:
 3) *model_selection.ipynb*: This notebook runs experiments to determine which type of model is most suited to our problem.
 
 
-## project structure
+## Project Structure
 
 The project is structured as follows:
 * *notebooks* contains the jupyter notebooks of this project
