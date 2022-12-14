@@ -1,0 +1,24 @@
+
+# jupyter support for python
+jupyter
+jupyter-client
+jupyter-console
+jupyter-core
+notebook
+
+# math libraries
+numpy
+pandas
+
+# data science and visualization
+matplotlib
+seaborn
+Pillow
+
+# machine learning libraries
+keras
+tensorflow
+scikit-learn
+
+# kaggle data download
+kaggle
