@@ -3,6 +3,9 @@ from sklearn.metrics import accuracy_score
 from sklearn.metrics import f1_score
 
 class Evaluation_Metrics():
+    """
+        This class calculates and summarizes evaluation metrics based on the predicted and true labels.
+    """
 
     def __init__(self, y_true,y_pred):
         """ constructs the metrics by comparing the predicted labels (y_pred) and actual labels (y_true)"""
@@ -18,8 +21,8 @@ class Evaluation_Metrics():
     def print_evaluation_report(self, test_description):
         """ print a summary of the evaluation metrics to command line."""
         print("\n"+ test_description)
-        print("- subset accuracy:",self.subset_accuracy)
-        print("- hamming score",self.hamming_score)
+        print("- subset accuracy:",round(self.subset_accuracy*100),"%")
+        print("- hamming score", round(self.hamming_score,2))
         print("- f1-scores: ", self.f1_scores)
 
 
