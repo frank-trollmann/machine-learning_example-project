@@ -10,10 +10,10 @@ class Evaluation_Metrics():
     def __init__(self, y_true,y_pred):
         """ constructs the metrics by comparing the predicted labels (y_pred) and actual labels (y_true)"""
         # subset accuracy
-        self.subset_accuracy = accuracy_score(y_true,y_pred)
+        self.subset_accuracy = round(accuracy_score(y_true,y_pred)*100)
 
         # hamming score
-        self.hamming_score = Evaluation_Metrics.hamming_score(y_true,y_pred)
+        self.hamming_score = round(Evaluation_Metrics.hamming_score(y_true,y_pred),2)
 
         # F1 score
         self.f1_scores = f1_score(y_true, y_pred, average=None)
@@ -21,8 +21,8 @@ class Evaluation_Metrics():
     def print_evaluation_report(self, test_description):
         """ print a summary of the evaluation metrics to command line."""
         print("\n"+ test_description)
-        print("- subset accuracy:",round(self.subset_accuracy*100),"%")
-        print("- hamming score", round(self.hamming_score,2))
+        print("- subset accuracy:",self.subset_accuracy,"%")
+        print("- hamming score", self.hamming_score,2)
         print("- f1-scores: ", self.f1_scores)
 
 
