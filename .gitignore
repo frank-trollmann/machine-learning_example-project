@@ -22,6 +22,8 @@ data/dataset
 
 # Test report
 coverage/
+.coverage
+.coverage.*
 
 # Virtual environment
 .python-version
