@@ -1,4 +1,3 @@
-
 # jupyter support for python
 jupyter
 jupyter-client
@@ -22,3 +21,6 @@ scikit-learn
 
 # kaggle data download
 kaggle
+
+# testing
+pytest-cov
