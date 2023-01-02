@@ -1,5 +1,29 @@
+# Byte-compiled, optimized, and DLL files
+*.py[cod]
+*$py.class
+
+# Cache
 __pycache__/
+.cache
+.pytest_cache/
+
+# Code Editor
+.idea/
+.vscode/
+
+# Credentials
+.env
+env/
 environment
 
+# Data
 data/pokemon-images-and-types.zip
 data/dataset
+
+# Test report
+coverage/
+
+# Virtual environment
+.python-version
+.venv
+venv/
