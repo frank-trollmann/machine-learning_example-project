@@ -1,12 +1,9 @@
-
-
-# Machine Learning Example project
+<h1 align=center><strong>Machine Learning Example project</strong></h1>
 
 For most beginners, a machine learning project consists of a single Jupyter notebook. While this setup is great for experimenting with small scale machine learning projects, bigger projects require a more structured approach to machine learning code. 
 
 This project serves as an example for a more complex machine learning project and how it can be set up. This is part of the learning unit XXX. 
 Please feel free to use this project as a reference for your own machine learning project. 
-
 
 ## Machine Learning Problem
 
@@ -20,13 +17,11 @@ This project is designed to be edited and run on your own computer. The machine 
 
 The recommended setup for this project is to be used in VSCode alongside a dedicated virtual environment. Below you can get information on how to connect everything correctly.
 
-
 ### Virtual Environment
 
 Virtual environments are essential to deal with different versions of libraries. It is strongly recommended for you to create a virtual environment for this project. If you don't know how, you can find out in the [documentation](https://python.land/virtual-environments/virtualenv)).
 
 Don't forget to activate the virtual environmet whenever you want to run code or manage dependencies.
-
 
 ### Project Dependencies
 
@@ -55,10 +50,10 @@ We will download our data from Kaggle via source code. For this to work you will
 1) Make a free kaggle account.
 2) generate an API key on *https://www.kaggle.com/(yourusername)/account*
 3) This should automatically download a $kaggle.json$ with your API access. 
-4) Place this file into your home directory into the $.kaggle$ folder
+4) Place this file into your home directory into the $.kaggle$ folder.
+5) (Not for Windows users!) For security reason, please run from your terminal: `chmod 600 ~/.kaggle/kaggle.json`. This command ensures that your Kaggle API secured and unreadable by others.
 
 After completing these steps, the Kaggle API will find your access credentials and use them automatially when accessing datasets. The kaggle API is already installed from the requirements.txt
-
 
 ## Testing
 The project comes with automated tests located in the folder "test". To run them execute *python -m unittest* in the main folder of this project.
@@ -72,7 +67,6 @@ Here is a summary of the notebooks and dependencies:
 2) *data_preparation.ipynb*: This notebook converts the initial dataset into X and y data for machine learning. This dataset needs to be run once for the following notebooks to function. 
 3) *model_selection.ipynb*: This notebook runs experiments to determine which type of model is most suited to our problem.
 
-
 ## Project Structure
 
 The project is structured as follows:
@@ -82,5 +76,4 @@ The project is structured as follows:
 * *evaluation* contains code for collecting and evaluating evaluation metrics. It also contains notes on evaluation of specific experiments. 
 * *test* contains automated tests for the python code in this project.
 
-
-
+---
