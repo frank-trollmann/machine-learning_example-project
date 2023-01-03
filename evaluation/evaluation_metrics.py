@@ -16,7 +16,7 @@ class EvaluationMetrics:
         self.subset_accuracy = round(accuracy_score(y_true=y_true, y_pred=y_pred) * 100)    # type: ignore
 
         # hamming score
-        self.hamming_score = round(self.hamming_score(y_true=y_true, y_pred=y_pred), 2)
+        self.hamming_score = round(self.calculate_hamming_score(y_true=y_true, y_pred=y_pred), 2)
 
         # F1 score
         self.f1_scores = f1_score(y_true, y_pred, average=None) # type: ignore
