@@ -1,10 +1,12 @@
 
-import keras.backend as kbackend
+import tensorflow.keras.backend as kbackend
 import  tensorflow as tf
 
 import statistics 
 
 from evaluation.evaluation_metrics import Evaluation_Metrics
+
+
 
 class Multi_Run_Evaluation:
     """
@@ -24,7 +26,7 @@ class Multi_Run_Evaluation:
         self.test_results = []
         self.training_results = []
 
-    def evaluate(self, nr_runs, epochs, early_stopping_patience, train_generator, X_train, y_train, X_test,y_test):
+    def evaluate(self, nr_runs, epochs, early_stopping_patience, train_generator, X_train, y_train, X_test,y_test,verbose = 2):
         """
             Trains the model a given number of times with the given training data and configuration.
             Records evaluation scores for each run. 
@@ -38,6 +40,7 @@ class Multi_Run_Evaluation:
                 y_train -- the training labels for calculating traning score. 
                 X_test -- the test dataset for calculating test scores
                 y_test -- the test labels for calculating test scores
+                verbose -- the verbosity level. Can be used to reduce the amount of information printed by training.
 
         """
 
@@ -46,7 +49,7 @@ class Multi_Run_Evaluation:
             model = self.model_creation()
 
             early_stopping = tf.keras.callbacks.EarlyStopping(monitor='val_loss', patience=early_stopping_patience,restore_best_weights=True)
-            history = model.fit_generator(train_generator, epochs=epochs, validation_data=(X_test, y_test),callbacks = [early_stopping])
+            history = model.fit_generator(train_generator, epochs=epochs, validation_data=(X_test, y_test),callbacks = [early_stopping],verbose=verbose)
 
             y_pred = model.predict(X_train) > 0.1
             self.training_results.append(Evaluation_Metrics(y_train, y_pred))
