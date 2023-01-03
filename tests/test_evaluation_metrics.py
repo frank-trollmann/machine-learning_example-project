@@ -15,8 +15,8 @@ class TestStringMethods(unittest.TestCase):
         y_true = [[1,0,0],[0,1,0],[0,0,1]]
         y_pred = y_true
         metrics = Evaluation_Metrics(y_true,y_pred)
-        
-        assert metrics.subset_accuracy == 1
+
+        assert metrics.subset_accuracy == 100
         assert metrics.hamming_score == 1
         assert len(metrics.f1_scores) == 3
         assert metrics.f1_scores[0] == 1
