@@ -127,6 +127,8 @@ class Grid_Search:
                 print("score: ",score)
 
                 self.scores.append((cnn_config,fc_config,score))
+                self.scores.sort(key=lambda tup: tup[2], reverse = True)
+                self.store_to_file()
 
         self.scores.sort(key=lambda tup: tup[2], reverse = True)
         return self.scores
