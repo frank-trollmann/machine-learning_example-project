@@ -1,5 +1,5 @@
 import unittest
-from data import Dataset
+from data.dataset import Dataset
 
 class TestStringMethods(unittest.TestCase):
     """
