@@ -49,9 +49,12 @@ def main():
             [500,500],
             [1000,1000]
         ],
+        epochs = 100, 
+        nr_runs = 5,
+        nr_splits = 5 
     )
     grid_search.run(X_train, y_train)
-    grid_search.store_to_file()
+
 
 
 if __name__ == "__main__":
