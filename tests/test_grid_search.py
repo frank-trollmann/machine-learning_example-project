@@ -11,9 +11,10 @@ class TestGridSearch(unittest.TestCase):
     """
         tests the class evaluation/grid_search.py
     """
+    
     def setUp(self):
         # run a grid search with random input and a very simple net.
-        # Even in this simple form, this step will take a while.
+        # Even in this simple form, this step will take a while!
         X = np.random.rand(10,10,10,3)
         y = np.random.randint(0,1,(20,5))       
         self.grid_search = Grid_Search(
@@ -25,30 +26,27 @@ class TestGridSearch(unittest.TestCase):
                                                             [4]], 
                                 epochs = 5, 
                                 nr_runs = 2,
-                                nr_splits=2
+                                nr_splits=2,
+                                test=True
                             )
-        self.grid_search.run(X,y)
+        self.results = self.grid_search.run(X,y)
 
     def test_result_number_search(self):
         """
             test that the number of results is the same as the combination of 2 x 2 options.
         """
-        assert len(self.grid_search.scores) == 4
+        assert len( self.results) == 4
     
 
-    def test_file_storage(self):
+    def test_checkpoint(self):
         """
-            test that storing to file and loading from file works
+            test that the last checkpoint exists and is complete (has 4 elements)
         """
-        self.grid_search.store_to_file(test=True)
-        results = Grid_Search.load_results(test=True)
+        last_checkpoint = self.grid_search.load_checkpoint()
 
-        self.assertCountEqual(self.grid_search.scores,results)
-
-        os.remove(Grid_Search.test_filename)
-
-
+        assert len(last_checkpoint) == 4
+    
 
     def tearDown(self):
-        pass
+        self.grid_search.remove_checkpoint()
 

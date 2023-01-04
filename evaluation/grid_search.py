@@ -2,6 +2,7 @@
 import statistics 
 import traceback
 import pickle
+import os
 
 import numpy as np
 
@@ -26,11 +27,11 @@ class Grid_Search:
         Other training parameters are fixed based on previous experiments (see overfitting_experimentation.ipynb)
     """
 
-    filename = "evaluation/experiment_records/grid_search.pickle"
-    test_filename = "tests/grid_search.pickle"
+    filename = "evaluation/experiment_records/grid_search-{}_{}.pickle"
+    test_filename = "tests/grid_search-{}_{}.pickle"
 
 
-    def __init__(self,in_shape, out_shape, convolutional_options, fully_connected_options, epochs = 100, nr_runs = 10,nr_splits = 10):
+    def __init__(self,in_shape, out_shape, convolutional_options, fully_connected_options, epochs = 100, nr_runs = 10,nr_splits = 10,test = False):
         """
             Configures the grid search.
 
@@ -54,11 +55,14 @@ class Grid_Search:
         self.epochs =  epochs
         self.nr_runs = nr_runs
         self.nr_splits = nr_splits
+        
+        self.test = test
 
     def run(self, X,y):
         """
             Runs grid search.            
             The  search tests all combinations of convolutional and fully connected shapes. For each of them it performs 10-fold cross validation and uses the average hamming score of the test set over all splits as comparison score.
+            The search stores checkpoints in evaluation/experiment_records/grid_search.pickle
 
             Parameters:
                 X -- the training data. 
@@ -66,17 +70,29 @@ class Grid_Search:
             Returns:
                 A list of all tried combinations and their scores as tuple (cnn_configuration, fully connected conciguration, score). The list is sorted by score.
         """
+        print("\n\n RUNNING GRID SEARCH ...")
+        results = {}
 
-        print("\n\nrunning grid search...")
+        checkpoint = self.load_checkpoint()
+        print("checkpoint: ",checkpoint)
+        if checkpoint is not None:
+            results = checkpoint
+            print("Existing checkpoint loaded with ", len(results), "entries")
+
         kfold = KFold(n_splits = self.nr_splits, shuffle = True)
 
-        # list of all tried configurations and scores. will be sorted and returned. 
-        self.scores = []
         for cnn_config in self.convolutional_options:
             for fc_config in self.fully_connected_options:
+                
                 print("\nTesting configuration: ")
                 print("  Convolutional part:",cnn_config)
                 print("  Connected part: ",fc_config)
+
+                # check to avoid retesting a tested combination:
+                config_key = "("+str(cnn_config) + "," + str(fc_config) + ")"
+                if config_key in results.keys():
+                    print("Skipping - already tested in checkpoint")
+                    continue
 
                 test_hammings = []
                 split_counter = 1
@@ -126,51 +142,56 @@ class Grid_Search:
                 score = statistics.mean(test_hammings)
                 print("score: ",score)
 
-                self.scores.append((cnn_config,fc_config,score))
-                self.scores.sort(key=lambda tup: tup[2], reverse = True)
-                self.store_to_file()
+                # update results and make a checkpoint
+                results[config_key] = (cnn_config,fc_config,score)
+                self.store_checkpoint(results)
 
-        self.scores.sort(key=lambda tup: tup[2], reverse = True)
-        return self.scores
+        scores = list(results.values())
 
-    def store_to_file(self,test = False):
+        scores.sort(key=lambda tup: tup[2], reverse = True)
+        return scores
+
+    def store_checkpoint(self,checkpoint):
         """
-            store the results of the last run into a file on hard drive
+            store a checkpint of the current results to a file where it can be loaded from if the experiment is interrupted
             
             Parameters:
-                test -- Whether we are in test mode. In test mode the file path is changed to avoid overwriting actual results.
+                checkpoint -- The checkpoint data to be stored.
         """
-        Grid_Search.store_results(self.scores,test)
 
-
-    def store_results(results, test = False):
-        """
-            Class method for storing results to a file.
-
-            Parameters:
-                results -- the results to be stored
-                test -- Whether we are in test mode. In test mode the file path is changed to avoid overwriting actual results.
-        """
-        filename = Grid_Search.filename
-        if test:
-            filename = Grid_Search.test_filename
+        filename = Grid_Search.filename.format(str(self.convolutional_options),str(self.fully_connected_options))
+        if self.test:
+            filename = Grid_Search.test_filename.format(str(self.convolutional_options),str(self.fully_connected_options))
 
         with open(filename,"wb") as f:
-            pickle.dump(results,f,pickle.HIGHEST_PROTOCOL)
-        
-    def load_results(test = False):
+            pickle.dump(checkpoint,f,pickle.HIGHEST_PROTOCOL)
+    
+    def load_checkpoint(self):
         """
-            Class method for loading results from a file.
-            
-            Parameters:
-                test -- Whether we are in test mode. In test mode the file path is changed to avoid overwriting actual results.
+            load the last checkpoint
         """
-        filename = Grid_Search.filename
-        if test:
-            filename = Grid_Search.test_filename
+        filename = Grid_Search.filename.format(str(self.convolutional_options),str(self.fully_connected_options))
+        if self.test:
+            filename = Grid_Search.test_filename.format(str(self.convolutional_options),str(self.fully_connected_options))
 
-        with open(filename,"rb") as f:
-            results = pickle.load(f)
-            return results
+        if os.path.exists(filename):
+            with open(filename,"rb") as f:
+                results = pickle.load(f)
+                return results
+        else:
+            print("Checkpoint file " + filename + " does not exist") 
+            return None
+
+    def remove_checkpoint(self):
+        """
+            clean up the checkpoint data if it is not needed any more.
+        """
+        filename = Grid_Search.filename.format(str(self.convolutional_options),str(self.fully_connected_options))
+        if self.test:
+            filename = Grid_Search.test_filename.format(str(self.convolutional_options),str(self.fully_connected_options))
+        
+        if os.path.exists(filename):
+            os.remove(filename)
+        
 
 

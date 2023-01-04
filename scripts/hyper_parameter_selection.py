@@ -25,11 +25,13 @@ def main():
                                 in_shape = (X_train.shape[1],X_train.shape[2],X_train.shape[3]),
                                 out_shape = y_train.shape[1],
                                 convolutional_options = [ [8],[16],[32],[64], [8,4],[16,8],[32,16],[64,32] ], 
-                                fully_connected_options = [ [10],[25],[50],[100],[250],[500],[1000],
-                                                            [10,10],[25,25],[100,100],[250,250],[500,500],[1000,1000] ], 
+                                fully_connected_options = [ [25],[50],[100],[250],[500],[1000],
+                                                            [25,25],[100,100],[250,250],[500,500],[1000,1000] ],
+                                epochs = 100, 
+                                nr_runs = 5,
+                                nr_splits = 5 
                             )
     grid_search.run(X_train,y_train)
-    grid_search.store_to_file()
     
 
 
