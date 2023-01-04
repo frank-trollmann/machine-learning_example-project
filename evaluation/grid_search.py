@@ -195,6 +195,3 @@ class GridSearch:
         
         if os.path.exists(filename):
             os.remove(filename)
-
-
-        return results
