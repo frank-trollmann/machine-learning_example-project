@@ -45,6 +45,8 @@ class MultiRunEvaluation:
         for run in range(nr_runs):
             print(f"\nRunning experiment {run+1} of, {nr_runs}")
 
+            kbackend.clear_session()
+
             model = self.model_creation()
 
             early_stopping = tf.keras.callbacks.EarlyStopping(monitor="val_loss", patience=early_stopping_patience, restore_best_weights=True)
