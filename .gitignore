@@ -3,3 +3,5 @@ environment
 
 data/pokemon-images-and-types.zip
 data/dataset
+*.ppk
+.vscode/
