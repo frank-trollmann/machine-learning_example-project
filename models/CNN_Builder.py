@@ -1,14 +1,21 @@
+from keras.models import Sequential
+from keras.layers import (
+    Conv2D,
+    Dense,
+    MaxPooling2D,
+    Dropout,
+    BatchNormalization,
+    Flatten
+)
+from keras.constraints import UnitNorm
 
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Conv2D, Dense,  MaxPooling2D, Dropout, BatchNormalization, Flatten, Activation
-from tensorflow.keras.constraints import UnitNorm
 
-class CNN_Builder:
+class CNNBuilder:
     """
         A builder class for a cnn.
     """
 
-    def __init__(self,in_shape, out_shape, convolutional_layers, fully_connected_layers):
+    def __init__(self, in_shape, out_shape, convolutional_layers, fully_connected_layers):
         """
             constructs a the builder object with a network structure. 
             Parameters:
@@ -28,7 +35,8 @@ class CNN_Builder:
         self.apply_batch_normalization = False
         self.weight_constraints = False
 
-    def build_model(self):
+
+    def build_model(self) -> Sequential:
         """
             Build a model based on the configuration of the builder.
             Each call builds a fresh model with different weights. 
@@ -43,12 +51,13 @@ class CNN_Builder:
         for index in range(len(self.fully_connected_layers)):
             self.add_fully_connected_layer(model=model, nr_neurons=self.fully_connected_layers[index])
 
-        model.add(Dense(self.out_shape,activation="softmax"))
-        model.compile(loss="binary_crossentropy", optimizer='adam',run_eagerly=True)
+        model.add(Dense(self.out_shape, activation="softmax"))
+        model.compile(loss="binary_crossentropy", optimizer="adam",run_eagerly=True)
 
         return model
 
-    def add_convolutional_layer(self,model, filters, first_layer):
+
+    def add_convolutional_layer(self, model, filters, first_layer) -> None:
         """
             adds one convolutional layer stack to the model.
             This includes a convolutional layer, activation and pooling layer.
@@ -56,6 +65,7 @@ class CNN_Builder:
 
             Dropout is not applied, following the advise in https://www.kdnuggets.com/2018/09/dropout-convolutional-networks.html
         """
+
         model_configuration = {}
 
         if first_layer:
@@ -67,26 +77,29 @@ class CNN_Builder:
         if self.apply_regularization:
             model_configuration["kernel_regularizer"] = "l2"
         
-        model.add(Conv2D(filters,
-                            (3,3),
-                            activation = "tanh",
-                            padding = "same", 
-                            **model_configuration))          
+        model.add(
+            Conv2D(
+                filters=filters,
+                kernel_size=(3,3),
+                activation="tanh",
+                padding="same", 
+                **model_configuration
+            )
+        )          
 
         if self.apply_batch_normalization:
             model.add(BatchNormalization())
 
         model.add(MaxPooling2D(pool_size=(2,2)))
 
-        
-    
-    def add_fully_connected_layer(self,model,nr_neurons):
+
+    def add_fully_connected_layer(self,model,nr_neurons) -> None:
         """
             adds one fully connected layer. This includes a dropout layer and other normalization operations according to the class configuration.
         """
-        model.add(Dense(nr_neurons,activation ="tanh"))
+        model.add(Dense(nr_neurons, activation ="tanh"))
         if self.apply_batch_normalization:
             model.add(BatchNormalization())
 
         if self.apply_dropout:
-            model.add(Dropout(0.5))
+            model.add(Dropout(rate=0.5))

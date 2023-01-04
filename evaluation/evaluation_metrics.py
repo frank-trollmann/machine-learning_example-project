@@ -1,32 +1,39 @@
+import numpy as np
 
 from sklearn.metrics import accuracy_score
 from sklearn.metrics import f1_score
 
-class Evaluation_Metrics():
+
+class EvaluationMetrics:
     """
         This class calculates and summarizes evaluation metrics based on the predicted and true labels.
     """
 
-    def __init__(self, y_true,y_pred):
+    def __init__(self, y_true: np.ndarray, y_pred: np.ndarray):
         """ constructs the metrics by comparing the predicted labels (y_pred) and actual labels (y_true)"""
+
         # subset accuracy
-        self.subset_accuracy = round(accuracy_score(y_true,y_pred)*100)
+        self.subset_accuracy = round(accuracy_score(y_true=y_true, y_pred=y_pred) * 100)    # type: ignore
 
         # hamming score
-        self.hamming_score = round(Evaluation_Metrics.hamming_score(y_true,y_pred),2)
+        self.hamming_score = round(self.calculate_hamming_score(y_true=y_true, y_pred=y_pred), 2)
 
         # F1 score
-        self.f1_scores = f1_score(y_true, y_pred, average=None)
+        self.f1_scores = f1_score(y_true, y_pred, average=None) # type: ignore
 
-    def print_evaluation_report(self, test_description):
+
+    def print_evaluation_report(self, test_description: str) -> None:
         """ print a summary of the evaluation metrics to command line."""
-        print("\n"+ test_description)
-        print("- subset accuracy:",self.subset_accuracy,"%")
-        print("- hamming score", self.hamming_score,2)
+
+        print(f"\n{test_description}")
+        print("- subset accuracy:", self.subset_accuracy,"%")
+        print("- hamming score", self.hamming_score)
         print("- f1-scores: ", self.f1_scores)
 
+        return
 
-    def hamming_score(y_true, y_pred):
+
+    def calculate_hamming_score(self, y_true: np.ndarray, y_pred: np.ndarray) -> float:
         """ calculates the hamming score between predicted labels y_pred and original laels y_true """
 
         sum = 0
@@ -41,4 +48,3 @@ class Evaluation_Metrics():
                 sum += intersection / union
         
         return sum / len(y_true)
-            

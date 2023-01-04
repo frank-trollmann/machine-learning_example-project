@@ -1,0 +1,44 @@
+[project]
+name = "ML Ketchum - Pokémon"
+version = "1.0.0"
+description = "A machine learning example project for SE15 - Machine Learning module at CODE University of Applied Sciences."
+authors = [
+    {name = "frank-trollmann", email=""},
+    {name = "Aeternalis-Ingenium", email="aeternalisingenium@proton.me"}
+]
+classifiers = [
+    "Topic :: Machine Learning"
+]
+
+dynamic = ["dependencies"]
+license = {file = "LICENSE"}
+readme = "README.md"
+requires-python = "<=3.10.9"
+
+[tool.setuptools.dynamic]
+dependencies = {file = ["requirements.txt"]}
+
+[project.urls]
+repository = "https://github.com/frank-trollmann/machine-learning_exsample-project"
+
+[tool.pytest.ini_options]
+python_files = ["test_*.py", "*_test.py"]
+python_classes = ["Test", "Acceptance"]
+python_functions = ["test_*"]
+testpaths = "tests"
+filterwarnings = "error"
+addopts = '''
+    --verbose
+    -p no:warnings
+    --strict-markers
+    --tb=short
+    --cov=src
+    --cov=tests
+    --cov-branch
+    --cov-report=term-missing
+    --cov-report=html:coverage/cov.html
+    --cov-report=xml:coverage/cov.xml
+    --no-cov-on-fail
+    --cov-fail-under=70
+    --asyncio-mode=auto
+'''

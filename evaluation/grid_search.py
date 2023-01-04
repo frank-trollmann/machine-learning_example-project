@@ -1,26 +1,23 @@
-
 import statistics 
 import traceback
 import pickle
-import os
 
+import warnings
+import os
 import numpy as np
 
+
 from sklearn.model_selection import KFold
-from tensorflow.keras.preprocessing.image import ImageDataGenerator
-from sklearn.model_selection import train_test_split
+from keras.preprocessing.image import ImageDataGenerator
 
+from models.CNN_Builder import CNNBuilder
+from evaluation.multi_run_evaluation import MultiRunEvaluation
 
-from data.dataset import Dataset
-from models.CNN_Builder import CNN_Builder
-from evaluation.multi_run_evaluation import Multi_Run_Evaluation
-
-# removing some deprecationwanings from output that disturb experiment report.
-import warnings
+# Removing some deprecationwanings from output that disturb experiment report.
 warnings.filterwarnings("ignore", category=DeprecationWarning) 
 
 
-class Grid_Search:
+class GridSearch:
     """
         This class implements grid search for CNN models. It enables testing different configurations of convolutional and fully connected layers. 
         
@@ -58,7 +55,9 @@ class Grid_Search:
         
         self.test = test
 
-    def run(self, X,y):
+        self.scores = list()
+
+    def run(self, X, y) -> list:
         """
             Runs grid search.            
             The  search tests all combinations of convolutional and fully connected shapes. For each of them it performs 10-fold cross validation and uses the average hamming score of the test set over all splits as comparison score.
@@ -79,14 +78,14 @@ class Grid_Search:
             results = checkpoint
             print("Existing checkpoint loaded with ", len(results), "entries")
 
-        kfold = KFold(n_splits = self.nr_splits, shuffle = True)
+        kfold = KFold(n_splits=self.nr_splits, shuffle=True)
 
         for cnn_config in self.convolutional_options:
             for fc_config in self.fully_connected_options:
-                
-                print("\nTesting configuration: ")
-                print("  Convolutional part:",cnn_config)
-                print("  Connected part: ",fc_config)
+                print("\nTesting configuration:")
+                print(f"    - Convolutional part: {cnn_config}")
+                print(f"    - Connected part: {fc_config}")
+
 
                 # check to avoid retesting a tested combination:
                 config_key = "("+str(cnn_config) + "," + str(fc_config) + ")"
@@ -97,54 +96,59 @@ class Grid_Search:
                 test_hammings = []
                 split_counter = 1
 
-                for train_indices,test_indices in kfold.split(X):
-
+                for train_indices, test_indices in kfold.split(X=X):
                     try:
-                        print("\n split {}/{}".format(split_counter,self.nr_splits))
+                        print(f"\nSplit {split_counter}/{self.nr_splits}")
                         split_counter+=1
 
                         X_train = X[train_indices]
                         y_train = y[train_indices]
                         X_test = X[test_indices]
                         y_test = y[test_indices]
+
                         train_datagen = ImageDataGenerator(
-                                                rotation_range=30, 
-                                                width_shift_range=0.1, 
-                                                height_shift_range=0.1, 
-                                                fill_mode="nearest")
+                            rotation_range=30, 
+                            width_shift_range=0.1, 
+                            height_shift_range=0.1, 
+                            fill_mode="nearest"
+                        )
                         train_generator = train_datagen.flow(X_train,y_train)
 
-                        cnn_builder = CNN_Builder(convolutional_layers=cnn_config,
-                                fully_connected_layers=fc_config,
-                                in_shape=(self.in_shape),
-                                out_shape=self.out_shape)
+                        cnn_builder = CNNBuilder(
+                            convolutional_layers=cnn_config,
+                            fully_connected_layers=fc_config,
+                            in_shape=(self.in_shape),
+                            out_shape=self.out_shape
+                        )
 
+                        evaluator = MultiRunEvaluation(model_creation=cnn_builder.build_model)
+                        evaluator.evaluate(
+                            nr_runs=self.nr_runs,
+                            epochs=self.epochs,
+                            early_stopping_patience=5,
+                            train_generator= train_generator,
+                            X_train=X_train,
+                            y_train=y_train,
+                            X_test=X_test,
+                            y_test=y_test,
+                            verbose = 0
+                        )
 
-                        evaluator = Multi_Run_Evaluation(cnn_builder.build_model)
-                        evaluator.evaluate( nr_runs=self.nr_runs, 
-                                            epochs=self.epochs, 
-                                            early_stopping_patience=5, 
-                                            train_generator= train_generator, 
-                                            X_train=X_train, 
-                                            y_train=y_train, 
-                                            X_test=X_test,
-                                            y_test=y_test,
-                                            verbose = 0)
-
-                        mean_test_hamming = Multi_Run_Evaluation.get_metrics_summary(evaluator.get_test_hamming_scores())["mean"]
+                        mean_test_hamming = MultiRunEvaluation.get_metrics_summary(values=evaluator.get_test_hamming_scores())["mean"]
                         test_hammings.append(mean_test_hamming)
 
                     except Exception as e:
-                        print("an exception occurred:")
+                        print("An exception occurred:")
                         traceback.print_exc()
-                        print("resuming with next test")
-                
-                score = statistics.mean(test_hammings)
-                print("score: ",score)
+                        print("Resuming with next test...")
 
+                score = statistics.mean(test_hammings)
+                print(f"Score: {score}")
+                
                 # update results and make a checkpoint
                 results[config_key] = (cnn_config,fc_config,score)
                 self.store_checkpoint(results)
+                
 
         scores = list(results.values())
 
@@ -158,11 +162,10 @@ class Grid_Search:
             Parameters:
                 checkpoint -- The checkpoint data to be stored.
         """
-
-        filename = Grid_Search.filename.format(str(self.convolutional_options),str(self.fully_connected_options))
+        filename = GridSearch.filename.format(str(self.convolutional_options),str(self.fully_connected_options))
         if self.test:
-            filename = Grid_Search.test_filename.format(str(self.convolutional_options),str(self.fully_connected_options))
-
+            filename = GridSearch.test_filename.format(str(self.convolutional_options),str(self.fully_connected_options))
+        
         with open(filename,"wb") as f:
             pickle.dump(checkpoint,f,pickle.HIGHEST_PROTOCOL)
     
@@ -170,9 +173,9 @@ class Grid_Search:
         """
             load the last checkpoint
         """
-        filename = Grid_Search.filename.format(str(self.convolutional_options),str(self.fully_connected_options))
+        filename = GridSearch.filename.format(str(self.convolutional_options),str(self.fully_connected_options))
         if self.test:
-            filename = Grid_Search.test_filename.format(str(self.convolutional_options),str(self.fully_connected_options))
+            filename = GridSearch.test_filename.format(str(self.convolutional_options),str(self.fully_connected_options))
 
         if os.path.exists(filename):
             with open(filename,"rb") as f:
@@ -186,12 +189,12 @@ class Grid_Search:
         """
             clean up the checkpoint data if it is not needed any more.
         """
-        filename = Grid_Search.filename.format(str(self.convolutional_options),str(self.fully_connected_options))
+        filename = GridSearch.filename.format(str(self.convolutional_options),str(self.fully_connected_options))
         if self.test:
-            filename = Grid_Search.test_filename.format(str(self.convolutional_options),str(self.fully_connected_options))
+            filename = GridSearch.test_filename.format(str(self.convolutional_options),str(self.fully_connected_options))
         
         if os.path.exists(filename):
             os.remove(filename)
-        
 
 
+        return results
