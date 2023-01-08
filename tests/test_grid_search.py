@@ -23,7 +23,7 @@ class TestGridSearch(unittest.TestCase):
             epochs=5,
             nr_runs=2,
             nr_splits=2,
-            test=True
+            is_test=True
                             )
         self.results = self.grid_search.run(X,y)
 
@@ -34,14 +34,13 @@ class TestGridSearch(unittest.TestCase):
         """
         assert len( self.results) == 4
 
-    
 
     def test_checkpoint(self):
         """
             test that the last checkpoint exists and is complete (has 4 elements)
         """
         last_checkpoint = self.grid_search.load_checkpoint()
-        assert len(last_checkpoint) == 4
+        assert len(last_checkpoint) == 4    # type: ignore
     
 
     def tearDown(self):

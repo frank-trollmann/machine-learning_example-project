@@ -22,9 +22,9 @@ def main():
     y_train = np.array(object=[y_train[i] for i in range(len(y_train))])
 
     grid_search = GridSearch(
-        in_shape = (X_train.shape[1], X_train.shape[2], X_train.shape[3]),  # type: ignore
-        out_shape = y_train.shape[1],
-        convolutional_options = [
+        in_shape=(X_train.shape[1], X_train.shape[2], X_train.shape[3]),  # type: ignore
+        out_shape=y_train.shape[1],
+        convolutional_options=[
             [8],
             [16],
             [32],
@@ -34,7 +34,7 @@ def main():
             [32,16],
             [64,32]
         ],
-        fully_connected_options = [
+        fully_connected_options=[
             [10],
             [25],
             [50],
@@ -53,7 +53,7 @@ def main():
         nr_runs = 5,
         nr_splits = 5 
     )
-    grid_search.run(X_train, y_train)
+    grid_search.run(X=X_train, y=y_train)
 
 
 
