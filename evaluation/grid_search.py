@@ -137,6 +137,16 @@ class GridSearch:
                         mean_test_hamming = MultiRunEvaluation.get_metrics_summary(values=evaluator.get_test_hamming_scores())["mean"]
                         test_hammings.append(mean_test_hamming)
 
+                        # cleanup. 
+                        del X_train
+                        del y_train
+                        del X_test
+                        del y_test
+                        del train_datagen
+                        del train_generator
+                        del cnn_builder
+                        del evaluator
+
                     except Exception as e:
                         print("An exception occurred:")
                         traceback.print_exc()

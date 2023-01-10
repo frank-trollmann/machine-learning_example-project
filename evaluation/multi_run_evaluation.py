@@ -1,6 +1,10 @@
 import  tensorflow as tf
 import keras.backend as kbackend
+import tensorflow.keras.backend as tkbackend
 import statistics 
+
+import gc
+import os, psutil
 
 from evaluation.evaluation_metrics import EvaluationMetrics
 
@@ -45,7 +49,6 @@ class MultiRunEvaluation:
         for run in range(nr_runs):
             print(f"\nRunning experiment {run+1} of, {nr_runs}")
 
-            kbackend.clear_session()
 
             model = self.model_creation()
 
@@ -59,6 +62,21 @@ class MultiRunEvaluation:
             y_pred_test = model.predict(X_test) > 0.1
 
             self.test_results.append(EvaluationMetrics(y_true=y_test, y_pred=y_pred_test)) # type: ignore
+
+            # cleanup memory
+            del model
+            del early_stopping
+            del history
+            del y_pred
+            del y_pred_test
+            model = None
+            kbackend.clear_session()
+            tkbackend.clear_session()
+
+            # print memory usage
+            gc.collect()
+            process = psutil.Process(os.getpid())
+            print(process.memory_info().rss)
 
 
     def reset_model(self):
