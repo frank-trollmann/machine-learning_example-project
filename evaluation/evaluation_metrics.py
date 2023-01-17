@@ -12,6 +12,12 @@ class EvaluationMetrics:
     def __init__(self, y_true: np.ndarray, y_pred: np.ndarray):
         """ constructs the metrics by comparing the predicted labels (y_pred) and actual labels (y_true)"""
 
+        if type(y_true) is not np.ndarray:
+            y_true = np.array(y_true)
+        
+        if type(y_pred) is not np.ndarray:
+            y_pred = np.array(y_pred)
+
         # subset accuracy
         self.subset_accuracy = round(accuracy_score(y_true=y_true, y_pred=y_pred) * 100)    # type: ignore
 
@@ -20,6 +26,11 @@ class EvaluationMetrics:
 
         # F1 score
         self.f1_scores = f1_score(y_true, y_pred, average=None) # type: ignore
+        self.f1_scores = [round(f1_score,2) for f1_score in self.f1_scores]
+
+        # accracy per class
+        self.class_accuracies = [accuracy_score(y_true=y_true[:,i],y_pred=y_pred[:,i]) for i in range(len(y_pred[0]))] 
+        self.class_accuracies = [round(accuracy *100) for accuracy in self.class_accuracies]
 
 
     def print_evaluation_report(self, test_description: str) -> None:
@@ -29,6 +40,7 @@ class EvaluationMetrics:
         print("- subset accuracy:", self.subset_accuracy,"%")
         print("- hamming score", self.hamming_score)
         print("- f1-scores: ", self.f1_scores)
+        print("- class accuracies: ", self.class_accuracies)
 
         return
 
