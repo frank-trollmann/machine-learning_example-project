@@ -1,6 +1,7 @@
 import shutil
 import pathlib
 import unittest
+import os
 
 from sklearn import tree
 from keras.models import Sequential
@@ -10,7 +11,7 @@ from keras.layers import (
 ) 
 
 from data.dataset import Dataset
-from helpers.models import MODEL_DIR, save_model, load_model
+from models.model_persistence import ROOT_DIR, save_model, load_model
 
 
 class TestModelVersioning(unittest.TestCase):
@@ -18,18 +19,22 @@ class TestModelVersioning(unittest.TestCase):
         tests the dataset class
     """
 
-    def setUp(self):        
+    def setUp(self):   
+        self.model_dir = str(ROOT_DIR / pathlib.Path("tests/snapshots/"))        
+
         self.tf_model_name = "Sequential_CNN_TEST_Model"
         self.sk_model_name = "DTC_CreiterionGini_TEST_MODEL"
         self.model_version = 1
         self.model_dir_version = 1
-        self.tf_model = Sequential(name=self.tf_model_name)
-        self.sk_model = tree.DecisionTreeClassifier()
 
+        self.tf_model = Sequential(name=self.tf_model_name)
         self.tf_model.add(Input(shape=(4,)))
         self.tf_model.add(Dense(2, activation="relu"))
         self.tf_model.compile(loss="binary_crossentropy", optimizer="adam", run_eagerly=True)
 
+        self.sk_model = tree.DecisionTreeClassifier()
+
+        
 
     def test_save_sk_model(self):
         """
@@ -40,10 +45,11 @@ class TestModelVersioning(unittest.TestCase):
             model=self.sk_model,
             model_name=self.sk_model_name,
             model_version=1,
-            model_dir_version=1
+            model_dir_version=1,
+            base_dir = self.model_dir
         )
 
-        assert pathlib.Path(f"{MODEL_DIR}/{self.sk_model_name}_V_{self.model_dir_version}/{self.sk_model_name}_v_{self.model_version}.pkl").is_file() == True
+        assert pathlib.Path(f"{self.model_dir}/{self.sk_model_name}_V_{self.model_dir_version}/{self.sk_model_name}_v_{self.model_version}.pkl").is_file() == True
 
 
     def test_save_tf_model(self):
@@ -55,10 +61,11 @@ class TestModelVersioning(unittest.TestCase):
             model=self.tf_model,
             model_name=self.tf_model_name,
             model_version=1,
-            model_dir_version=1
+            model_dir_version=1,
+            base_dir = self.model_dir
         )
 
-        assert pathlib.Path(f"{MODEL_DIR}/{self.tf_model_name}_V_{self.model_dir_version}/{self.tf_model_name}_v_{self.model_version}.h5").is_file() == True
+        assert pathlib.Path(f"{self.model_dir}/{self.tf_model_name}_V_{self.model_dir_version}/{self.tf_model_name}_v_{self.model_version}.h5").is_file() == True
 
 
     def test_overwriting_same_sk_model_with_same_filename(self):
@@ -67,17 +74,19 @@ class TestModelVersioning(unittest.TestCase):
             model=self.sk_model,
             model_name=self.sk_model_name,
             model_version=1,
-            model_dir_version=1
+            model_dir_version=1,
+            base_dir = self.model_dir
         )
         save_model(
             ml_library="scikit-learn",
             model=self.sk_model,
             model_name=self.sk_model_name,
             model_version=1,
-            model_dir_version=1
+            model_dir_version=1,
+            base_dir = self.model_dir
         )
 
-        model_files = [model_file.name for model_file in pathlib.Path(f"{MODEL_DIR}/{self.sk_model_name}_V_{self.model_dir_version}").iterdir()]
+        model_files = [model_file.name for model_file in pathlib.Path(f"{self.model_dir}/{self.sk_model_name}_V_{self.model_dir_version}").iterdir()]
 
         assert len(model_files) == 1
 
@@ -91,14 +100,16 @@ class TestModelVersioning(unittest.TestCase):
             model=self.sk_model,
             model_name=self.sk_model_name,
             model_version=1,
-            model_dir_version=1
+            model_dir_version=1,
+            base_dir = self.model_dir
         )
 
         sk_loaded_model = load_model(
             ml_library="scikit-learn",
             model_name=self.sk_model_name,
             model_version=1,
-            model_dir_version=1
+            model_dir_version=1,
+            base_dir = self.model_dir
         )
 
         assert isinstance(sk_loaded_model, tree.BaseDecisionTree)
@@ -114,14 +125,16 @@ class TestModelVersioning(unittest.TestCase):
             model=self.tf_model,
             model_name=self.tf_model_name,
             model_version=1,
-            model_dir_version=1
+            model_dir_version=1,
+            base_dir = self.model_dir
         )
 
         tf_loaded_model = load_model(
             ml_library="tensorflow",
             model_name=self.tf_model_name,
             model_version=1,
-            model_dir_version=1
+            model_dir_version=1,
+            base_dir = self.model_dir
         )
 
         assert isinstance(tf_loaded_model, Sequential)
@@ -129,7 +142,5 @@ class TestModelVersioning(unittest.TestCase):
 
 
     def tearDown(self):
-        if pathlib.Path(f"{MODEL_DIR}/{self.sk_model_name}_V_{self.model_dir_version}/{self.sk_model_name}_v_{self.model_version}.pkl").is_file():
-            shutil.rmtree(path=pathlib.Path(f"{MODEL_DIR}/{self.sk_model_name}_V_{self.model_dir_version}"))
-        if pathlib.Path(f"{MODEL_DIR}/{self.tf_model_name}_V_{self.model_dir_version}/{self.tf_model_name}_v_{self.model_version}.h5").is_file():
-            shutil.rmtree(path=pathlib.Path(f"{MODEL_DIR}/{self.tf_model_name}_V_{self.model_dir_version}"))
+        if os.path.exists(path=self.model_dir):
+            shutil.rmtree(path= pathlib.Path(self.model_dir))
