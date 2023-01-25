@@ -1,29 +1,61 @@
 <h1 align=center><strong>Machine Learning Example project</strong></h1>
 
-For most beginners, a machine learning project consists of a single Jupyter notebook. While this setup is great for experimenting with small scale machine learning projects, bigger projects require a more structured approach to machine learning code. 
+For most beginners, a machine learning project consists of a single Python notebook. While this setup is great for experimenting with small scale Machine Learning projects, bigger projects require a more structured approach to remain understandable and maintainable. In this regard, Machine Learning is not too different from traditional normal Software Engineering.
 
-This project serves as an example for a more complex machine learning project and how it can be set up. This is part of the learning unit XXX. 
-Please feel free to use this project as a reference for your own machine learning project. 
+This test project has been created for the learning unit "Complex Machine Learning Projects" at CODE University of applied sciences. It's purpose it to be a showcase for how a Machine Learning project can be structured. The problem we tackle with this project has been selected with the requirement that certain experiments can be run in a university classroom setting and thus may seem like it is too simply to warrant some of the more elaborate structures and tests we use. This is onpurpose, as this project is more about showing off processes and structures than it is about the specific Machine Learning problem. 
 
-## Machine Learning Problem
+While most of the project should stand as a reference on it's own, we have included the commented slidesets of the Learning Unit in the documentation folder. 
 
-The problem adressed in this project is pokemon classification. This is based on a Kaggle Dataset (see [here](https://www.kaggle.com/datasets/vishalsubbiah/pokemon-images-and-types)) that records each pokemon image and type (multiple are possible). Our goal is to learn a model that predicts the types of a pokemon based on it's image. This means our machine learning problem has the following form:
+# Machine Learning Problem
+
+The problem adressed in this project is Pokémon classification. This is based on a Kaggle Dataset (see [here](https://www.kaggle.com/datasets/vishalsubbiah/pokemon-images-and-types)) that records one image and up to two types per Pokémon. Our goal is to learn a model that predicts the types of a Pokémon based on it's image. This is a multi-label classification problem of the following form:
 * Input: An image
 * Output: A set of classes.
 
-## How to set up?
+# Project Structure
+
+Here we describe the structure of the project. 
+
+## Folder Structure
+
+The project is structured along the following folders:
+* *data*:  code for handling data (storing, loading, processing), as well as the dataset itself (after it is downloaded).
+* *models*: code for handling models (creating, storing, loading) as well as the stored models.
+* *evaluation*: code for evaluating a model
+* *notebooks:* Python notebooks
+* *scripts:* executable scripts
+* *tests:* automated tests for the Python code in this project.
+
+
+## Notebooks
+
+The main entry points of this project are Python notebooks. Each notebook has a specific purpose. Some notebooks depend on each other (e.g., the data preparation creates a dataset for machine learning and needs to be run before any notebook containing machine learning.)
+
+Here is a summary of the notebooks and dependencies:
+1) *data_exploration.ipynb*: aims to understand the dataset by exploring it.
+2) *data_preparation.ipynb*: converts the initial dataset into X and y data for machine learning. This dataset needs to be run once for the following notebooks to function. 
+3) *model_selection.ipynb*: runs experiments to determine which type of model is most suited to our problem.
+4) *overfitting_experimentation.ipynb*: experiments with several ways to reduce overfitting in order to determine which are effective on our problem.
+5) *hyper_parameter_selection.ipynb*: evaluates Grid Search results to determine the best hyper-parameters for our problem.
+6) *evaluation.ipyb*: evaluates the model found by hyper-paratemer selection.
+
+## Scripts
+
+The project contains one Script: *hyper_parameter_selection.py*. This script runs grid search on the structure of a convolutional neural network. The results are written into a .pickle file in the experiment records. 
+
+# Project Setup
 
 This project is designed to be edited and run on your own computer. The machine learning problem is small enough that training should run on an average notebook in a reasonable amount of time. We recommend using Visual Studio Code as programming environment as it has good support for both Python files (.py) and Notebook files (.ipynb).
 
 The recommended setup for this project is to be used in VSCode alongside a dedicated virtual environment. Below you can get information on how to connect everything correctly.
 
-### Virtual Environment
+## Virtual Environment
 
 Virtual environments are essential to deal with different versions of libraries. It is strongly recommended for you to create a virtual environment for this project. If you don't know how, you can find out in the [documentation](https://python.land/virtual-environments/virtualenv)).
 
 Don't forget to activate the virtual environmet whenever you want to run code or manage dependencies.
 
-### Project Dependencies
+## Project Dependencies
 
 All the dependencies you need should be listed in requirements.txt. 
 
@@ -31,7 +63,7 @@ After creating a fresh environment you should activate it and make sure pip is u
 
 Now you can install all dependencies with *pip install -r requirements.txt*. 
 
-### Jupyter Notebook Plugin
+## Jupyter Notebook Plugin
 
 VSCode has a plugin for Jupyter Notebooks. [Here](https://code.visualstudio.com/docs/datascience/jupyter-notebooks) is the documentation that walks you through how to install it.
 
@@ -44,7 +76,7 @@ This requires the following steps:
 
 If you encounter any issues, or if the kernel doesn't appear, make sure you restarted VSCode (maybe get a coffee after you do. It took a few minutes for me to find the kernel). If that still didn't help, try substituting step 1 with this command: *python3 -m ipykernel install --user --name=projectname*. This tip is taken from [here](https://stackoverflow.com/questions/58119823/jupyter-notebooks-in-visual-studio-code-does-not-use-the-active-virtual-environm).
 
-### Kaggle API
+## Kaggle API
 
 We will download our data from Kaggle via source code. For this to work you will need to be registered with Kaggle and download your API key configuration. This requires the following steps:
 1) Make a free kaggle account.
@@ -58,22 +90,8 @@ After completing these steps, the Kaggle API will find your access credentials a
 ## Testing
 The project comes with automated tests located in the folder "test". To run them execute *python -m unittest* in the main folder of this project.
 
-## Notebook Dependencies
+## Setup in other environments.
 
-The main entry points of this project are jupyter notebooks. Each notebook has a specific purpose. Some notebooks depend on each other (e.g., the data preparation creates a dataset for machine learning and needs to be run before any notebook containing machine learning.)
+The documentation folder contains additional direction on how to set up this project with environments other than VSCode. The folder contains documents for the following environments:
+- Deepnote - [link](documentation/Deepnote%20Setup.md)
 
-Here is a summary of the notebooks and dependencies:
-1) *data_exploration.ipynb*: This notebook aims to understand the dataset by exploring it.
-2) *data_preparation.ipynb*: This notebook converts the initial dataset into X and y data for machine learning. This dataset needs to be run once for the following notebooks to function. 
-3) *model_selection.ipynb*: This notebook runs experiments to determine which type of model is most suited to our problem.
-
-## Project Structure
-
-The project is structured as follows:
-* *notebooks* contains the jupyter notebooks of this project
-* *data* contains datasets and python code around loading and storing them.
-* *models* contains code for creating machine learning models.
-* *evaluation* contains code for collecting and evaluating evaluation metrics. It also contains notes on evaluation of specific experiments. 
-* *test* contains automated tests for the python code in this project.
-
----
