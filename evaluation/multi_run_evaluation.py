@@ -79,23 +79,6 @@ class MultiRunEvaluation:
             print(process.memory_info().rss)
 
 
-    def reset_model(self):
-        """
-            resets the model with random weights. This is done before each run.
-            taken from here: https://github.com/keras-team/keras/issues/341
-        """
-        
-        session = kbackend.get_session()
-
-        for layer in self.model.layers: # type: ignore
-            for v in layer.__dict__:
-                v_arg = getattr(layer,v)
-                if hasattr(v_arg, "initializer"):
-                    initializer_method = getattr(v_arg, "initializer")
-                    initializer_method.run(session=session)
-                    #print('reinitializing layer {}.{}'.format(layer.name, v))
-
-
     def get_training_accuracies(self) -> list:
         """
             returns the accuracy scores of the training runs as list

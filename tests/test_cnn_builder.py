@@ -1,5 +1,5 @@
 import unittest
-from models.CNN_Builder import CNNBuilder
+from models.cnn_builder import CNNBuilder
 
 from keras.layers.convolutional.conv2d import Conv2D
 from keras.layers.pooling.max_pooling2d import MaxPooling2D

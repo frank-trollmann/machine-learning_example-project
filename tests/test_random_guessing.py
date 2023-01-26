@@ -1,5 +1,5 @@
 import unittest
-from models.Random_Guessing_Benchmark import RandomGuessingBenchmark
+from models.random_guessing_benchmark import RandomGuessingBenchmark
 
 
 class TestRandomGuessing(unittest.TestCase):
@@ -11,7 +11,7 @@ class TestRandomGuessing(unittest.TestCase):
         self.labels = ["Red","Green","Blue"]
         self.X_test = [None]*10
         self.model = RandomGuessingBenchmark(self.labels)
-        self.model.fit(X:None, y:None)
+        self.model.fit(X=None, y=None)
 
 
     def test_dimensions(self):

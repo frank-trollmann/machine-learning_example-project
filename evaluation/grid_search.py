@@ -10,7 +10,7 @@ import numpy as np
 from sklearn.model_selection import KFold
 from keras.preprocessing.image import ImageDataGenerator
 
-from models.CNN_Builder import CNNBuilder
+from models.cnn_builder import CNNBuilder
 from evaluation.multi_run_evaluation import MultiRunEvaluation
 
 # Removing some deprecationwanings from output that disturb experiment report.

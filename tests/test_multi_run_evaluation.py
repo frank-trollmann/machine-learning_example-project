@@ -5,7 +5,7 @@ from sklearn.model_selection import train_test_split
 
 from evaluation.multi_run_evaluation import MultiRunEvaluation
 from keras.preprocessing.image import ImageDataGenerator
-from models.CNN_Builder import CNNBuilder
+from models.cnn_builder import CNNBuilder
 
 class TestMultiRunEvaluation(unittest.TestCase):
     """
