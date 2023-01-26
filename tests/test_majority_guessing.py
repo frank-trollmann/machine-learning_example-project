@@ -11,6 +11,7 @@ class TestMajorityGuessing(unittest.TestCase):
         self.labels = ["Red","Green","Blue"]
         self.X_test = [None]*10
         self.model = MajorityGuessingBenchmark(self.labels, "Blue")
+        self.model.fit(X:None, y:None)
 
 
     def test_dimensions(self):

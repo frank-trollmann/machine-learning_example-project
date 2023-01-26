@@ -21,6 +21,7 @@ class TestMultiRunEvaluation(unittest.TestCase):
             This contains multiple test cases that are all linked to the evaluation going through and thus have been merged into one method:
                 1) running the evaluation works and is not causing an exception
                 2) after running the evaluation, the results are available.
+                4) test that printmetrics works without causing an exception
         """
         X = np.random.rand(10, 10, 10, 3)
         y = np.random.randint(0, 1, (10, 5))
@@ -62,14 +63,26 @@ class TestMultiRunEvaluation(unittest.TestCase):
         assert len(evaluator.get_training_hamming_scores()) == 5
         assert len(evaluator.get_test_hamming_scores()) == 5
 
+        # test printing metrics
+        try:
+            evaluator.print_metrics()
+        except Exception:
+            self.fail("print_metrics() raised an exception unexpectedly!")
+
         
     def test_metrict_summary(self):
+        """
+            test that metrics summary is calculated correctly
+        """
         summary = MultiRunEvaluation.get_metrics_summary([0,2,4])
 
         assert summary["min"] == 0
         assert summary["max"] == 4
         assert summary["mean"] == 2
         assert summary["std_dev"] == 2.0
+
+
+    
 
     def tearDown(self):
         pass

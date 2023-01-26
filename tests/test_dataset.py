@@ -24,6 +24,9 @@ class TestDataset(unittest.TestCase):
         assert self.dataset.is_downloaded() == True
         assert self.dataset.get_original_data() is not None
         assert self.dataset.get_image(pokemon_name="pikachu") is not None
+        assert self.dataset.get_image(pokemon_name="blacephalon") is not None
+        assert self.dataset.get_image(pokemon_name="not a pokemon") is None
+        assert len(self.dataset.get_labels()) == 18
 
         # check that remove_all correctly cleans this data
         self.dataset.remove_all()
@@ -72,6 +75,7 @@ class TestDataset(unittest.TestCase):
         # check that remove_all correctly cleans this data
         self.dataset.remove_all()
         assert self.dataset.has_prepared_data() == False
+
 
 
     def tearDown(self):
