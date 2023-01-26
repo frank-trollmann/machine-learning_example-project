@@ -2,7 +2,7 @@ import unittest
 from data.dataset import Dataset
 
 
-class TestStringMethods(unittest.TestCase):
+class TestDataset(unittest.TestCase):
     """
         tests the dataset class
     """
@@ -77,6 +77,3 @@ class TestStringMethods(unittest.TestCase):
     def tearDown(self):
         self.dataset.remove_all()
 
-
-if __name__ == '__main__':
-    unittest.main()
