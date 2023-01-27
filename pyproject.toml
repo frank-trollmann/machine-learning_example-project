@@ -1,5 +1,5 @@
 [project]
-name = "ML Ketchum - Pokémon"
+name = "ML-Example-Project"
 version = "1.0.0"
 description = "A machine learning example project for SE15 - Machine Learning module at CODE University of Applied Sciences."
 authors = [
