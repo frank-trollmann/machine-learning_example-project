@@ -17,7 +17,7 @@ classifiers = [
 dynamic = ["dependencies"]
 license = {file = "LICENSE"}
 readme = "README.md"
-requires-python = "<=3.10.9"
+requires-python = ">=3.10"
 
 [tool.setuptools.dynamic]
 dependencies = {file = ["requirements.txt"]}

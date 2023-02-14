@@ -45,7 +45,7 @@ The project contains one Script: *hyper_parameter_selection.py*. This script run
 
 # Project Setup
 
-This project is designed to be edited and run on your own computer. The machine learning problem is small enough that training should run on an average notebook in a reasonable amount of time. We recommend using Visual Studio Code as programming environment as it has good support for both Python files (.py) and Notebook files (.ipynb).
+This project requires Python 3.10 and is designed to be edited and run on your own computer. The machine learning problem is small enough that training should run on an average notebook in a reasonable amount of time. We recommend using Visual Studio Code as programming environment as it has good support for both Python files (.py) and Notebook files (.ipynb).
 
 The recommended setup for this project is to be used in VSCode alongside a dedicated virtual environment. Below you can get information on how to connect everything correctly.
 
@@ -53,7 +53,7 @@ The recommended setup for this project is to be used in VSCode alongside a dedic
 
 Virtual environments are essential to deal with different versions of libraries. It is strongly recommended for you to create a virtual environment for this project. If you don't know how, you can find out in the [documentation](https://python.land/virtual-environments/virtualenv)).
 
-Don't forget to activate the virtual environmet whenever you want to run code or manage dependencies.
+Please make sure to create a virtual environment with Python 3.10 and don't forget to activate the virtual environmet whenever you want to run code or manage dependencies.
 
 ## Project Dependencies
 
@@ -72,7 +72,7 @@ Note that you will have to put in some additional effort to connect your noteboo
 This requires the following steps:
 1) Install a kernel in your virtual environment by running *ipython kernel install --user --name=project_name*  feel free to give it a better name.
 2) Make sure to restart VSCode to give it a chance to find the Kernel
-3) Open a Juypter notebook and select te kernel in the top right. 
+3) Open a Juypter notebook and select the kernel in the top right. 
 
 If you encounter any issues, or if the kernel doesn't appear, make sure you restarted VSCode (maybe get a coffee after you do. It took a few minutes for me to find the kernel). If that still didn't help, try substituting step 1 with this command: *python3 -m ipykernel install --user --name=projectname*. This tip is taken from [here](https://stackoverflow.com/questions/58119823/jupyter-notebooks-in-visual-studio-code-does-not-use-the-active-virtual-environm).
 

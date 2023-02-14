@@ -1,26 +1,27 @@
 # jupyter support for python
-jupyter
-jupyter-client
-jupyter-console
-jupyter-core
-notebook
+jupyter==1.0.0
+jupyter_client==7.4.8
+jupyter-console==6.4.4
+jupyter_core==5.1.2
+notebook==6.5.2
 
 # math libraries
-numpy
-pandas
+numpy==1.24.1
+pandas==1.5.2
 
 # data science and visualization
-matplotlib
-seaborn
-Pillow
+matplotlib==3.6.2
+seaborn==0.12.2
+Pillow==9.4.0
 
 # machine learning libraries
-keras
-tensorflow
-scikit-learn
+keras==2.11.0
+tensorflow==2.11.0
+scikit-learn==1.2.0
 
 # kaggle data download
-kaggle
+kaggle==1.5.12
 
 # testing
-pytest-cov
+pytest==7.2.0
+pytest-cov==4.0.0
