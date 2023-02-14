@@ -31,61 +31,61 @@ class TestCNNBuilder(unittest.TestCase):
         """
             tests that the created model has the correct input shape
         """
-        assert self.model.input.shape[1] == 100
-        assert self.model.input.shape[2] == 200
-        assert self.model.input.shape[3] == 3
+        assert self.model.input.shape[1] == 100 # type: ignore
+        assert self.model.input.shape[2] == 200 # type: ignore
+        assert self.model.input.shape[3] == 3   # type: ignore
     
     def test_output_shape(self):
         """
             tests that the created model has the correct output shape
         """
-        assert self.model.output.shape[1] == 7
+        assert self.model.output.shape[1] == 7  # type: ignore
     
     def test_cnn_layers(self):
         """
             tests that the CNN part of the network is generated correctly
         """
 
-        assert type(self.model.layers[0]) == Conv2D
+        assert isinstance(self.model.layers[0], Conv2D)
         assert self.model.layers[0].filters == 77
 
-        assert type(self.model.layers[1]) == BatchNormalization
+        assert isinstance(self.model.layers[1], BatchNormalization)
         
-        assert type(self.model.layers[2]) == MaxPooling2D
+        assert isinstance(self.model.layers[2], MaxPooling2D)
         
-        assert type(self.model.layers[3]) == Conv2D
+        assert isinstance(self.model.layers[3], Conv2D)
         assert self.model.layers[3].filters == 777
 
-        assert type(self.model.layers[4]) == BatchNormalization
+        assert isinstance(self.model.layers[4], BatchNormalization)
 
-        assert type(self.model.layers[5]) == MaxPooling2D
+        assert isinstance(self.model.layers[5], MaxPooling2D)
     
     def test_flatten_layer(self):
         """
             tests that the cnn and ann part of the network are separted with a flattening layer
         """
-        assert type(self.model.layers[6]) == Flatten
+        assert isinstance(self.model.layers[6], Flatten)
     
     def test_ann_layers(self):
         """
             tests that the ANN part of the network is generated correctly
         """
-        assert type(self.model.layers[7]) == Dense
+        assert isinstance(self.model.layers[7], Dense)
         assert self.model.layers[7].units == 8
 
-        assert type(self.model.layers[8]) == BatchNormalization
+        assert isinstance(self.model.layers[8], BatchNormalization)
 
-        assert type(self.model.layers[9]) == Dropout
+        assert isinstance(self.model.layers[9], Dropout)
 
-        assert type(self.model.layers[10]) == Dense
+        assert isinstance(self.model.layers[10], Dense)
         assert self.model.layers[10].units == 9
 
-        assert type(self.model.layers[11]) == BatchNormalization
+        assert isinstance(self.model.layers[11], BatchNormalization)
 
-        assert type(self.model.layers[12]) == Dropout
+        assert isinstance(self.model.layers[12], Dropout)
 
 
-        assert type(self.model.layers[13]) == Dense
+        assert isinstance(self.model.layers[13], Dense)
         assert self.model.layers[13].units == 7
 
 
