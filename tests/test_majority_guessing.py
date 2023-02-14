@@ -11,14 +11,14 @@ class TestMajorityGuessing(unittest.TestCase):
         self.labels = ["Red","Green","Blue"]
         self.X_test = [None]*10
         self.model = MajorityGuessingBenchmark(self.labels, "Blue")
-        self.model.fit(X=None, y=None)
+        self.model.fit(X=None, y=None)  # type: ignore
 
 
     def test_dimensions(self):
         """
             tests that the the result has the right dimensions (number of samples, length of prediction vector)
         """
-        results = self.model.predict(X=self.X_test)
+        results = self.model.predict(X=self.X_test) # type: ignore
 
         assert len(results) == len(self.X_test)
         assert len(results[0]) == len(self.labels)
@@ -29,7 +29,7 @@ class TestMajorityGuessing(unittest.TestCase):
             tests that results are correct
         """
 
-        results = self.model.predict(X=self.X_test)
+        results = self.model.predict(X=self.X_test) # type: ignore
 
         for result in results:
             assert result == [0,0,1]

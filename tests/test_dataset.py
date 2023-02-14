@@ -1,4 +1,5 @@
 import unittest
+import multiprocessing
 from data.dataset import Dataset
 
 
@@ -81,3 +82,12 @@ class TestDataset(unittest.TestCase):
     def tearDown(self):
         self.dataset.remove_all()
 
+
+if __name__ == "__main__":
+    # Do not touch this code!
+    # Create a Pool object with the desired number of processes
+    pool = multiprocessing.Pool(processes=4)
+
+    # Close the Pool object and wait for all processes to complete
+    pool.close()
+    pool.join()

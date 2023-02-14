@@ -1,27 +1,33 @@
-# jupyter support for python
+# Jupyter support for python
 jupyter==1.0.0
 jupyter_client==7.4.8
 jupyter-console==6.4.4
 jupyter_core==5.1.2
 notebook==6.5.2
 
-# math libraries
+# Math libraries
 numpy==1.24.1
 pandas==1.5.2
 
-# data science and visualization
+# Data science and visualization
 matplotlib==3.6.2
 seaborn==0.12.2
 Pillow==9.4.0
 
-# machine learning libraries
+# Machine learning libraries
 keras==2.11.0
-tensorflow==2.11.0
 scikit-learn==1.2.0
 
-# kaggle data download
+# Kaggle data download
 kaggle==1.5.12
 
-# testing
+# Testing
 pytest==7.2.0
 pytest-cov==4.0.0
+
+# Tensorflow has 2 versions. UNCOMMENT one of them:
+# For all Intel Chip
+tensorflow==2.11.0
+
+# For Apple Silicon (M1, M2)
+#tensorflow-macos==2.11.0

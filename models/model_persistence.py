@@ -1,4 +1,3 @@
-import enum
 import os
 import pathlib
 import pickle
