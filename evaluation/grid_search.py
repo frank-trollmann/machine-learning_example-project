@@ -4,8 +4,6 @@ import pickle
 
 import warnings
 import os
-import numpy as np
-
 
 from sklearn.model_selection import KFold
 from keras.preprocessing.image import ImageDataGenerator
