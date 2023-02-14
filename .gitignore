@@ -22,6 +22,7 @@ data/dataset
 
 # Test report
 coverage/
+htmlcov/
 .coverage
 .coverage.*
 
@@ -33,3 +34,5 @@ venv/
 # Key files
 *.ppk
 
+# Playground notebook for local tests
+notebooks/test_notebook.ipynb
