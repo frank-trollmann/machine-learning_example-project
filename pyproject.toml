@@ -3,15 +3,17 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "ML_Example_Project"
+name = "ml_example_project"
 version = "1.0.0"
 description = "A machine learning example project for SE15 - Machine Learning module at CODE University of Applied Sciences."
 authors = [
-    {name = "frank-trollmann", email=""},
+    {name = "Frank Trollmann", email="frank.trollmann@code.berlin"},
     {name = "Aeternalis-Ingenium", email="aeternalisingenium@proton.me"}
 ]
 classifiers = [
-    "Topic :: Machine Learning"
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
+    "Operating System :: OS Independent"
 ]
 
 dynamic = ["dependencies"]
