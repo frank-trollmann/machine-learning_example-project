@@ -37,7 +37,8 @@ Here is a summary of the notebooks and dependencies:
 3) *model_selection.ipynb*: runs experiments to determine which type of model is most suited to our problem.
 4) *overfitting_experimentation.ipynb*: experiments with several ways to reduce overfitting in order to determine which are effective on our problem.
 5) *hyper_parameter_selection.ipynb*: evaluates Grid Search results to determine the best hyper-parameters for our problem.
-6) *evaluation.ipyb*: evaluates the model found by hyper-paratemer selection.
+6) *manuael_model_selection.ipynb*: an experimentation notebook that can be executed to test different model configurations.
+7) *evaluation.ipyb*: evaluates the model found by hyper-paratemer selection.
 
 ## Scripts
 
