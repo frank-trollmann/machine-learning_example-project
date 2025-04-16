@@ -1,7 +1,7 @@
 import unittest
 from models.cnn_builder import CNNBuilder
 
-from keras.layers.convolutional.conv2d import Conv2D
+from keras.layers import Conv2D
 from keras.layers.pooling.max_pooling2d import MaxPooling2D
 from keras.layers.reshaping.flatten import Flatten
 from keras.layers.core.dense import Dense

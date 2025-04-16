@@ -4,7 +4,7 @@ import numpy as np
 from sklearn.model_selection import train_test_split
 
 from evaluation.multi_run_evaluation import MultiRunEvaluation
-from keras.preprocessing.image import ImageDataGenerator
+from keras.utils.image_dataset import image_dataset_from_directory
 from models.cnn_builder import CNNBuilder
 
 class TestMultiRunEvaluation(unittest.TestCase):
