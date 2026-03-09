@@ -33,7 +33,7 @@ The main entry points of this project are Python notebooks. Each notebook has a 
 
 Here is a summary of the notebooks and dependencies:
 1) *data_exploration.ipynb*: aims to understand the dataset by exploring it.
-2) *data_preparation.ipynb*: converts the initial dataset into X and y data for machine learning. This dataset needs to be run once for the following notebooks to function. 
+2) *data_preparation.ipynb*: converts the initial dataset into X and y data for machine learning. This notebook needs to be run once for the following notebooks to function. 
 3) *model_selection.ipynb*: runs experiments to determine which type of model is most suited to our problem.
 4) *overfitting_experimentation.ipynb*: experiments with several ways to reduce overfitting in order to determine which are effective on our problem.
 5) *hyper_parameter_selection.ipynb*: evaluates Grid Search results to determine the best hyper-parameters for our problem.
@@ -79,11 +79,14 @@ If you encounter any issues, or if the kernel doesn't appear, make sure you rest
 
 ## Kaggle API
 
-We will download our data from Kaggle via source code. For this to work you will need to be registered with Kaggle and download your API key configuration. This requires the following steps:
+We will download our data from Kaggle via source code. For this to work you will need to be registered with Kaggle and download your API key configuration. Note that this project still uses the old Kaggle API (now called Legacy API). You can set it up like this:
 1) Make a free kaggle account.
-2) generate an API key on *https://www.kaggle.com/(yourusername)/account*
+2) Generate a Legacy API key on *https://www.kaggle.com/settings*
 3) This should automatically download a $kaggle.json$ with your API access. 
 4) Place this file into your home directory into the $.kaggle$ folder.
+    - You will likely have to create the .kaggle folder
+    - On windows systems, the folder should be under your user folder (e.g., `C:\Users\<username>\.kaggle`)
+    - On Mac and Linux-based machines, this should be under `~./kaggle`
 5) (Not for Windows users!) For security reason, please run from your terminal: `chmod 600 ~/.kaggle/kaggle.json`. This command ensures that your Kaggle API secured and unreadable by others.
 
 After completing these steps, the Kaggle API will find your access credentials and use them automatially when accessing datasets. The kaggle API is already installed from the requirements.txt
