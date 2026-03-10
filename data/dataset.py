@@ -8,6 +8,8 @@ from kaggle.api.kaggle_api_extended import KaggleApi
 from PIL import Image
 from zipfile import ZipFile
 
+import pathlib
+
 
 class Dataset:
     """
@@ -24,12 +26,12 @@ class Dataset:
         self.DATASET_DIR_PATH = "data/dataset/"
         self.ZIP_PATH = "data/"
         self.ZIP_NAME = "pokemon-images-and-types.zip"
-        self.IMAGE_FOLDER = "data/dataset/images/images/"
+        self.IMAGE_FOLDER = "data/dataset/images/"
 
         if test_mode:
             self.DATASET_DIR_PATH = "tests/dataset/"
             self.ZIP_PATH = "tests/"
-            self.IMAGE_FOLDER = "tests/dataset/images/images/"
+            self.IMAGE_FOLDER = "tests/dataset/images/"
 
 
     def download(self) -> None:
